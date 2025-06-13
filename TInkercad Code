@@ -1,0 +1,62 @@
+ #include <Servo.h>
+
+
+
+const int LED = 11;
+const int LED2 = 6; 
+
+const int BUTTON_PIN = 2;
+
+const int Servopin = 5; 
+const int POT_PIN = A0; 
+boolean isPressed = false;
+int ledState = 0; 
+Servo motor; 
+void setup() {
+  motor.attach(5); 
+  pinMode(POT_PIN, INPUT); 
+  pinMode(LED, OUTPUT);
+ pinMode(LED2,OUTPUT); 
+  pinMode(BUTTON_PIN, INPUT_PULLUP);  
+
+ 
+  Serial.begin(9600);
+}
+
+void loop() {
+   int potValue = analogRead(POT_PIN); 
+
+ 
+  int Pot = map(potValue,0,1023,0,180);
+  motor.write(Pot);
+  
+  int buttonValue = digitalRead(BUTTON_PIN);
+
+  if (buttonValue == 0 && isPressed == false) {
+   ledState = (ledState + 1)%3;
+    isPressed = true;
+  }
+
+  if (buttonValue ==1) {
+  
+ isPressed = false; 
+  }
+   if (ledState == 0) { 
+  	digitalWrite(LED, LOW);
+   digitalWrite(LED2,LOW); 
+  }
+  
+  else if (ledState == 1) { 
+    digitalWrite(LED, HIGH);
+    digitalWrite(LED2,HIGH); 
+  }
+    
+  if (ledState == 2)  {
+analogWrite(LED, 125);
+  analogWrite(LED2,125); 
+  }
+      
+
+
+}
+
